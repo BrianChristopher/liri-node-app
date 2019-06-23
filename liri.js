@@ -1,31 +1,69 @@
+//This links the .env and creates variables to use for the secret information
+require("dotenv").config();
+const keys = require("./keys.js")
+const spotifyID = keys.spotify.id;
+const spotifySecret = keys.spotify.secret;
+const bitSecret = keys.bandsintown.secret;
 
+//Other required nodes
+const fs = require("fs");
+const axios = require('axios');
+const moment = require('moment');
 
-// require("dotenv").config();
-// var keys = require("./keys.js");
-// var spotify = new Spotify(keys.spotify);
-
-var fs = require("fs");
-
-
-
-
-//THESE ARE THE GLOBAL VARIABLES WHICH TAKE IN USER INPUT FROM THE TERMINAL
+//THESE ARE THE GLOBAL VARIABLES AND PROCESS WHICH TAKE IN USER INPUT FROM THE TERMINAL
 var command = process.argv[2];
-var input = process.argv[3];
+var input = "";
+for (i = 3; i < process.argv.length; i++) {
+    if (i == 3) {
+        input += process.argv[i];
+    }
+    else {
+        input += "+" + process.argv[i];
+    }
+}
+var displayName = "";
+for (i = 3; i < process.argv.length; i++) {
+    if (i == 3) {
+        displayName += process.argv[i];
+    }
+    else {
+        displayName += " " + process.argv[i];
+    }
+}
+
+
 
 //THESE ARE THE FUNCTIONS TO RUN EACH COMMAND
-var concertThis = function(){
-    console.log("You called concert-this for: " + input);
+var concertThis = function () {
+    //console.log("You called concert-this for: " + input);
+    var queryURL = "https://rest.bandsintown.com/artists/" + input + "/events?app_id=" + bitSecret + "&date=upcoming";
+    console.log(queryURL);
+    //console.log(displayName);
+    console.log(displayName + " will be performing at the following venue(s):")
+
+    axios.get(queryURL).then(
+        function (response) {
+            var concertInformation = response.data;
+            for (i = 0; i < concertInformation.length ; i++){
+                console.log("Venue: " + concertInformation[i].venue.name + ", " + concertInformation[i].venue.city + ", " + concertInformation[i].venue.region);
+                console.log("Date: " + moment(concertInformation[i].datetime).format('MM/DD/YYYY'))
+                console.log("---------------")
+            }
+
+
+            
+        })
+
 };
 
-var spotifyThisSong = function(){
+var spotifyThisSong = function () {
     console.log("You called spotify-this for: " + input);
 };
 
-var movieThis = function(){
+var movieThis = function () {
     console.log("You called movie-this for: " + input)
 };
-var doWhatItSays = function(){
+var doWhatItSays = function () {
     console.log("You called concert this for: " + input);
 };
 
@@ -48,6 +86,6 @@ switch (command) {
         break;
 
     default:
-        console.log("Sorry, that is not an allowed function. Please enter concert-this, spotify-this-song, movie-this, do-what-it-says. You may add a band, song, or movie after 'this'.");
+        console.log("Sorry, that is not an allowed function. Please enter concert-this, spotify-this-song, movie-this, or do-what-it-says. You may add a band, song, or movie after 'this'.");
         break;
 }
