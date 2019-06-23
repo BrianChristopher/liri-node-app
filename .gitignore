@@ -59,3 +59,6 @@ typings/
 
 # next.js build output
 .next
+
+# the instructions said to add .DS_Store... this is a MAC problem and I am on a PC.  But just in case.
+.DS_Store
