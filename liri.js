@@ -31,29 +31,20 @@ for (i = 3; i < process.argv.length; i++) {
     }
 }
 
-
-
 //THESE ARE THE FUNCTIONS TO RUN EACH COMMAND
 var concertThis = function () {
-    //console.log("You called concert-this for: " + input);
     var queryURL = "https://rest.bandsintown.com/artists/" + input + "/events?app_id=" + bitSecret + "&date=upcoming";
     console.log(queryURL);
-    //console.log(displayName);
     console.log(displayName + " will be performing at the following venue(s):")
-
     axios.get(queryURL).then(
         function (response) {
             var concertInformation = response.data;
-            for (i = 0; i < concertInformation.length ; i++){
+            for (i = 0; i < concertInformation.length; i++) {
                 console.log("Venue: " + concertInformation[i].venue.name + ", " + concertInformation[i].venue.city + ", " + concertInformation[i].venue.region);
                 console.log("Date: " + moment(concertInformation[i].datetime).format('MM/DD/YYYY'))
                 console.log("---------------")
             }
-
-
-            
         })
-
 };
 
 var spotifyThisSong = function () {
