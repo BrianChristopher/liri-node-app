@@ -12,30 +12,33 @@ const moment = require('moment');
 
 //THESE ARE THE GLOBAL VARIABLES AND PROCESS WHICH TAKE IN USER INPUT FROM THE TERMINAL
 var command = process.argv[2];
-var input = "";
-for (i = 3; i < process.argv.length; i++) {
-    if (i == 3) {
-        input += process.argv[i];
-    }
-    else {
-        input += "+" + process.argv[i];
-    }
-}
-var displayName = "";
-for (i = 3; i < process.argv.length; i++) {
-    if (i == 3) {
-        displayName += process.argv[i];
-    }
-    else {
-        displayName += " " + process.argv[i];
-    }
-}
+var input = process.argv.slice(3).join("+");
+var displayName = process.argv.slice(3).join(" ");
+
+// for (i = 3; i < process.argv.length; i++) {
+//     if (i == 3) {
+//         input += process.argv[i];
+//     }
+//     else {
+//         input += "+" + process.argv[i];
+//     }
+// }
+// var displayName = "";
+// for (i = 3; i < process.argv.length; i++) {
+//     if (i == 3) {
+//         displayName += process.argv[i];
+//     }
+//     else {
+//         displayName += " " + process.argv[i];
+//     }
+// }
 
 //THESE ARE THE FUNCTIONS TO RUN EACH COMMAND
 var concertThis = function () {
     var queryURL = "https://rest.bandsintown.com/artists/" + input + "/events?app_id=" + bitSecret + "&date=upcoming";
-    console.log(queryURL);
-    console.log(displayName + " will be performing at the following venue(s):")
+    //console.log(queryURL);
+    console.log("\n");
+    console.log(displayName + " will be performing at the following venue(s): \n")
     axios.get(queryURL).then(
         function (response) {
             var concertInformation = response.data;
