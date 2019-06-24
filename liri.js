@@ -4,6 +4,12 @@ const keys = require("./keys.js")
 const spotifyID = keys.spotify.id;
 const spotifySecret = keys.spotify.secret;
 const bitSecret = keys.bandsintown.secret;
+const Spotify = require('node-spotify-api');
+
+const spotify = new Spotify({
+    id: spotifyID,
+    secret: spotifySecret
+});
 
 //Other required nodes
 const fs = require("fs");
@@ -12,33 +18,15 @@ const moment = require('moment');
 
 //THESE ARE THE GLOBAL VARIABLES AND PROCESS WHICH TAKE IN USER INPUT FROM THE TERMINAL
 var command = process.argv[2];
-var input = process.argv.slice(3).join("+");
-var displayName = process.argv.slice(3).join(" ");
-
-// for (i = 3; i < process.argv.length; i++) {
-//     if (i == 3) {
-//         input += process.argv[i];
-//     }
-//     else {
-//         input += "+" + process.argv[i];
-//     }
-// }
-// var displayName = "";
-// for (i = 3; i < process.argv.length; i++) {
-//     if (i == 3) {
-//         displayName += process.argv[i];
-//     }
-//     else {
-//         displayName += " " + process.argv[i];
-//     }
-// }
+var inputWithPlus = process.argv.slice(3).join("+");
+var inputWithSpace = process.argv.slice(3).join(" ");
 
 //THESE ARE THE FUNCTIONS TO RUN EACH COMMAND
 var concertThis = function () {
-    var queryURL = "https://rest.bandsintown.com/artists/" + input + "/events?app_id=" + bitSecret + "&date=upcoming";
+    var queryURL = "https://rest.bandsintown.com/artists/" + inputWithPlus + "/events?app_id=" + bitSecret + "&date=upcoming";
     //console.log(queryURL);
     console.log("\n");
-    console.log(displayName + " will be performing at the following venue(s): \n")
+    console.log(inputWithSpace + " will be performing at the following venue(s): \n")
     axios.get(queryURL).then(
         function (response) {
             var concertInformation = response.data;
@@ -51,14 +39,33 @@ var concertThis = function () {
 };
 
 var spotifyThisSong = function () {
-    console.log("You called spotify-this for: " + input);
+    spotify
+        .search({ type: 'track', query: inputWithSpace })
+        .then(function (response) {
+            var trackTitle = response.tracks.items[0].name;
+            var searchArtist = response.tracks.items[0].artists[0].name;
+            var searchAlbum = response.tracks.items[0].album.name;
+            var searchPreview = response.tracks.items[0].external_urls.spotify;
+            console.log("\n");
+            console.log("You searched for the song: " + inputWithSpace);
+            console.log("---------------");
+            console.log("Track Title: " + trackTitle);
+            console.log("Artist(s): " + searchArtist);
+            console.log("Album: " + searchAlbum);
+            console.log("Preview Link: " + searchPreview);
+            console.log("---------------");
+            
+        })
+        .catch(function (err) {
+            console.log(err);
+        });
 };
 
 var movieThis = function () {
-    console.log("You called movie-this for: " + input)
+    console.log("You called movie-this for: " + inputWithPlus)
 };
 var doWhatItSays = function () {
-    console.log("You called concert this for: " + input);
+    console.log("You called do what it says.");
 };
 
 //THIS IS THE SWITCH CASE TO CALL THE APPROPTIATE FUNCTION
@@ -83,3 +90,5 @@ switch (command) {
         console.log("Sorry, that is not an allowed function. Please enter concert-this, spotify-this-song, movie-this, or do-what-it-says. You may add a band, song, or movie after 'this'.");
         break;
 }
+
+
