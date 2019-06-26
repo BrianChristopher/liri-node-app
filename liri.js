@@ -54,7 +54,7 @@ var spotifyThisSong = function () {
             console.log("Album: " + searchAlbum);
             console.log("Preview Link: " + searchPreview);
             console.log("---------------");
-            
+
         })
         .catch(function (err) {
             console.log(err);
@@ -63,6 +63,32 @@ var spotifyThisSong = function () {
 
 var movieThis = function () {
     console.log("You called movie-this for: " + inputWithPlus)
+    var queryURL = "https://www.omdbapi.com/?t=" + inputWithPlus + "&apikey=trilogy";
+    //console.log(queryURL);
+    console.log("\n");
+    console.log("You searched for: " + inputWithSpace);
+    axios.get(queryURL).then(
+        function (response) {
+            console.log(response.data);
+            var movieTitle = 1;
+            var movieYear = 2;
+            var movieIMBDRating = 3;
+            var movieRTRating = 4;
+            var movieCountry = 5;
+            var movieLanguage = 6;
+            var moviePlot = 7;
+            var movieActors = 8;
+            console.log("Movie Title: " + movieTitle);
+            console.log("Year Released: " + movieYear);
+            console.log("IMBD Rating: " + movieIMBDRating);
+            console.log("Rotten Tomato Rating: " + movieRTRating);
+            console.log("Country of Orgin: " + movieCountry);
+            console.log("Language: " + movieLanguage);
+            console.log("Plot: " + moviePlot);
+            console.log("Actor(s): " + movieActors);
+        })
+
+
 };
 var doWhatItSays = function () {
     console.log("You called do what it says.");
