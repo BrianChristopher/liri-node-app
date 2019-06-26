@@ -24,7 +24,6 @@ var inputWithSpace = process.argv.slice(3).join(" ");
 //THESE ARE THE FUNCTIONS TO RUN EACH COMMAND
 var concertThis = function () {
     var queryURL = "https://rest.bandsintown.com/artists/" + inputWithPlus + "/events?app_id=" + bitSecret + "&date=upcoming";
-    //console.log(queryURL);
     console.log("\n");
     console.log(inputWithSpace + " will be performing at the following venue(s): \n")
     axios.get(queryURL).then(
@@ -93,7 +92,44 @@ var movieThis = function () {
 
 };
 var doWhatItSays = function () {
-    console.log("You called do what it says.");
+    
+    fs.readFile("random.txt", "utf8", function (err, data) {
+        if (err) {
+            return console.log(err);
+        }
+
+        var doThis = data.split(",");
+
+        command = doThis[0];
+        inputWithPlus = doThis[1].split(" ").join("+");
+        inputWithSpace = doThis[1].split(" ").join(" ");
+
+        switch (command) {
+            case "concert-this":
+                concertThis();
+                break;
+    
+            case "spotify-this-song":
+                spotifyThisSong();
+                break;
+    
+            case "movie-this":
+                movieThis();
+                break;
+    
+            case "do-what-it-says":
+                doWhatItSays();
+                break;
+    
+            default:
+                console.log("Something went terribly wrong. Check the data in yout file.");
+                break;
+        }
+    });
+
+    
+
+
 };
 
 //THIS IS THE SWITCH CASE TO CALL THE APPROPTIATE FUNCTION
