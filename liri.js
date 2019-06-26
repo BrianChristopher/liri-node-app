@@ -61,7 +61,7 @@ var spotifyThisSong = function () {
 };
 
 var movieThis = function () {
-    console.log("You called movie-this for: " + inputWithPlus)
+    
     var queryURL = "https://www.omdbapi.com/?t=" + inputWithPlus + "&apikey=trilogy";
 
     axios.get(queryURL).then(
