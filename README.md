@@ -37,7 +37,7 @@ The `spotify-this-song` function requires a search term. The search term can be 
     $ node liri.js spotify-this-song MMMBop
 ```
 
-**concert-this**
+**movie-this**
 
 The `movie-this` function requires a search term. The search term can be a single word or multiple words. Example:
 ```
@@ -53,4 +53,32 @@ The `do-what-it-says` function does not require a search term. This search funct
 ## Screenshots
 ![concert-this command example](screen1a.png)
 ![concert-this results example](screen1b.png)
+![spotify-this-song results example](screen2.png)
+![movie-this results example](screen3.png)
+![do-what-it-says results example](screen4.png)
+
+## Link to project
+
+This project is deployed to github: https://github.com/BrianChristopher/liri-node-app.git
+
+## Technologies Used
+
+This project was created with Javascript and run in node.js.  Several node packages were used:
+
+* axios
+
+    Axios was used to access the OMDB/IMDB and Band In Town APIs.
+
+* node-spotify-api
+
+    This was used to access the Spotify API.
+
+* dotenv
+
+    Dotenv allowed for hiding API keys and other sensitive data that should not be made public in github.
+
+* moment
+
+    Moment.js was used to convert event times received from the Bands In Town API.
+
 
